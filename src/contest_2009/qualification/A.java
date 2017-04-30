@@ -99,11 +99,7 @@ public class A extends Solution {
         HashMap<Character, Node> children = new HashMap<>();
 
         private Node(String s) {
-            if (s.length() > 1) {
-                children.put(s.charAt(0), new Node(s.substring(1)));
-            } else {
-                children.put(s.charAt(0), null);
-            }
+            children.put(s.charAt(0), s.length() > 1 ? new Node(s.substring(1)) : null);
         }
 
         private void addWord(String s) {
@@ -120,36 +116,28 @@ public class A extends Solution {
 
         private int matches(String s) {
             char first = s.charAt(0);
-            if (s.length() > 1) {
-                if (first == '(') {
-                    ArrayList<Character> next = new ArrayList<>();
-                    int i = 0;
-                    while ((first = s.charAt(++i)) != ')') {
-                        next.add(first);
-                    }
-                    int numOfMatches = 0;
-                    if (i < s.length() - 1) {
-                        for (int j = 0; j < next.size(); j++) {
-                            if (children.containsKey(next.get(j))) {
-                                numOfMatches += children.get(next.get(j)).matches(s.substring(i + 1));
-                            }
-                        }
-                    } else {
-                        for (int j = 0; j < next.size(); j++) {
-                            if (children.containsKey(next.get(j))) {
-                                numOfMatches++;
-                            }
-                        }
-                    }
-                    return numOfMatches;
-                }
+            if (s.length() <= 1) {
                 if (children.containsKey(first)) {
-                    return children.get(first).matches(s.substring(1));
+                    return 1;
                 }
                 return 0;
             }
+            if (first == '(') {
+                ArrayList<Character> next = new ArrayList<>();
+                int i = 0;
+                while ((first = s.charAt(++i)) != ')') {
+                    next.add(first);
+                }
+                int numOfMatches = 0;
+                for (int j = 0; j < next.size(); j++) {
+                    if (children.containsKey(next.get(j))) {
+                        numOfMatches += i < s.length() - 1 ? children.get(next.get(j)).matches(s.substring(i + 1)) : 1;
+                    }
+                }
+                return numOfMatches;
+            }
             if (children.containsKey(first)) {
-                return 1;
+                return children.get(first).matches(s.substring(1));
             }
             return 0;
         }

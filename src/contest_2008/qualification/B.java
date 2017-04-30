@@ -32,20 +32,23 @@ public class B extends Solution {
             final int T = Integer.parseInt(rawInputFile.get(0));
             inputFile.add(rawInputFile.remove(0));
             for (int i = 0; i < T; i++) {
-                inputFile.add(rawInputFile.remove(0));
+                final String turnoverTime = rawInputFile.remove(0);
                 final String[] NANB = rawInputFile.remove(0).split(" ");
                 final int NA = Integer.parseInt(NANB[0]);
                 final int NB = Integer.parseInt(NANB[1]);
-                inputFile.add(NA + ";" + NB);
                 String NAs = NA > 0 ? rawInputFile.remove(0) : "";
                 for (int j = 1; j < NA; j++) {
                     NAs += ";" + rawInputFile.remove(0);
                 }
-                inputFile.add(NAs);
                 String NBs = NB > 0 ? rawInputFile.remove(0) : "";
                 for (int j = 1; j < NB; j++) {
                     NBs += ";" + rawInputFile.remove(0);
                 }
+
+                inputFile.add(turnoverTime);
+                inputFile.add(Integer.toString(NA));
+                inputFile.add(Integer.toString(NB));
+                inputFile.add(NAs);
                 inputFile.add(NBs);
             }
             String[] result = new B(inputFile).solve();
@@ -74,35 +77,38 @@ public class B extends Solution {
             for (Integer i : I) {
                 final long startTime = System.currentTimeMillis();
 
-                final int turnoverTime = Integer.parseInt(m_inputFile.get(i * 4 + 1));
-                final String[] noTrips_raw = m_inputFile.get(i * 4 + 2).split(";");
-                final String[] ABs_raw = m_inputFile.get(i * 4 + 3).split(";");
-                final String[] BAs_raw = m_inputFile.get(i * 4 + 4).split(";");
+                final int turnoverTime = Integer.parseInt(m_inputFile.get(i * 5 + 1));
+                final int NA = Integer.parseInt(m_inputFile.get(i * 5 + 2));
+                final int NB = Integer.parseInt(m_inputFile.get(i * 5 + 3));
+                final String[] ABs_raw = m_inputFile.get(i * 5 + 4).split(";");
+                final String[] BAs_raw = m_inputFile.get(i * 5 + 5).split(";");
 
                 List<String> departuresA = new ArrayList<>();
                 Map<String, List<String>> arrivalsA = new HashMap<>();
                 List<String> departuresB = new ArrayList<>();
                 Map<String, List<String>> arrivalsB = new HashMap<>();
 
-                for (int j = 0; j < Integer.parseInt(noTrips_raw[0]); j++) {
-                    String[] ABs = ABs_raw[j].split(" ");
-                    departuresA.add(ABs[0]);
-                    if (!arrivalsA.containsKey(ABs[0])) {
-                        arrivalsA.put(ABs[0], new ArrayList<>());
+                for (int j = 0; j < NA; j++) {
+                    String departure = ABs_raw[j].split(" ")[0];
+                    String arrival = ABs_raw[j].split(" ")[1];
+                    departuresA.add(departure);
+                    if (!arrivalsA.containsKey(departure)) {
+                        arrivalsA.put(departure, new ArrayList<>());
                     }
-                    arrivalsA.get(ABs[0]).add(ABs[1]);
+                    arrivalsA.get(departure).add(arrival);
                 }
                 for (List<String> arrTimes : arrivalsA.values()) {
                     Collections.sort(arrTimes);
                 }
                 Collections.sort(departuresA);
-                for (int j = 0; j < Integer.parseInt(noTrips_raw[1]); j++) {
-                    String[] BAs = BAs_raw[j].split(" ");
-                    departuresB.add(BAs[0]);
-                    if (!arrivalsB.containsKey(BAs[0])) {
-                        arrivalsB.put(BAs[0], new ArrayList<>());
+                for (int j = 0; j < NB; j++) {
+                    String departure = BAs_raw[j].split(" ")[0];
+                    String arrival = BAs_raw[j].split(" ")[1];
+                    departuresB.add(departure);
+                    if (!arrivalsB.containsKey(departure)) {
+                        arrivalsB.put(departure, new ArrayList<>());
                     }
-                    arrivalsB.get(BAs[0]).add(BAs[1]);
+                    arrivalsB.get(departure).add(arrival);
                 }
                 for (List<String> arrTimes : arrivalsB.values()) {
                     Collections.sort(arrTimes);
@@ -113,31 +119,26 @@ public class B extends Solution {
                 int solution2 = 0;
 
                 while (!departuresA.isEmpty() && !departuresB.isEmpty()) {
-                    int nextTrip = 0;
+                    boolean nextTripFromB;
                     if (departuresA.get(0).compareTo(departuresB.get(0)) <= 0) {
                         solution1++;
-                        nextTrip = 2;
+                        nextTripFromB = true;
                     } else {
                         solution2++;
-                        nextTrip = 1;
+                        nextTripFromB = false;
                     }
-                    String[] departure = (nextTrip == 2 ? departuresA : departuresB).remove(0).split(":");
-                    String[] arrival = (nextTrip == 2 ? arrivalsA : arrivalsB).get(departure[0] + ":" + departure[1])
+                    String[] departure = (nextTripFromB ? departuresA : departuresB).remove(0).split(":");
+                    String[] arrival = (nextTripFromB ? arrivalsA : arrivalsB).get(departure[0] + ":" + departure[1])
                             .remove(0).split(":");
                     arrival[0] = String.format("%02d", (int) (Integer.parseInt(arrival[0])
                             + Math.floor((Integer.parseInt(arrival[1]) + turnoverTime) / 60.0)));
                     arrival[1] = String.format("%02d", (int) ((Integer.parseInt(arrival[1]) + turnoverTime) % 60.0));
-                    while (nextTrip > 0) {
-                        departure = findNextTrip(nextTrip == 2 ? departuresB : departuresA, arrival);
-                        if (departure == null) {
-                            nextTrip = 0;
+                    while (true) {
+                        if ((departure = findNextTrip(nextTripFromB ? departuresB : departuresA, arrival)) == null) {
+                            break;
                         } else {
-                            if (nextTrip == 2) {
-                                nextTrip = 1;
-                            } else {
-                                nextTrip = 2;
-                            }
-                            arrival = (nextTrip == 2 ? arrivalsA : arrivalsB).get(departure[0] + ":" + departure[1])
+                            nextTripFromB = !nextTripFromB;
+                            arrival = (nextTripFromB ? arrivalsA : arrivalsB).get(departure[0] + ":" + departure[1])
                                     .remove(0).split(":");
                             arrival[0] = String.format("%02d", (int) (Integer.parseInt(arrival[0])
                                     + Math.floor((Integer.parseInt(arrival[1]) + turnoverTime) / 60.0)));

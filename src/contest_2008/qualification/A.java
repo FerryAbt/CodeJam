@@ -31,12 +31,7 @@ public class A extends Solution {
             final int T = Integer.parseInt(rawInputFile.get(0));
             inputFile.add(rawInputFile.remove(0));
             for (int i = 0; i < T; i++) {
-                final int S = Integer.parseInt(rawInputFile.remove(0));
-                String engines = rawInputFile.remove(0);
-                for (int j = 1; j < S; j++) {
-                    engines += ";" + rawInputFile.remove(0);
-                }
-                inputFile.add(engines);
+                inputFile.add(rawInputFile.remove(0));
                 final int Q = Integer.parseInt(rawInputFile.remove(0));
                 String searches = Q > 0 ? rawInputFile.remove(0) : "";
                 for (int j = 1; j < Q; j++) {
@@ -70,7 +65,7 @@ public class A extends Solution {
             for (Integer i : I) {
                 final long startTime = System.currentTimeMillis();
 
-                final int S = m_inputFile.get(i * 2 + 1).split(";").length;
+                final int S = Integer.parseInt(m_inputFile.get(i * 2 + 1));
                 final String[] Q = m_inputFile.get(i * 2 + 2).split(";");
 
                 int solution = 0;
