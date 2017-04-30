@@ -69,7 +69,7 @@ public class A extends Solution {
         public void run() {
             for (Integer i : I) {
                 final long startTime = System.currentTimeMillis();
-                
+
                 final int S = m_inputFile.get(i * 2 + 1).split(";").length;
                 final String[] Q = m_inputFile.get(i * 2 + 2).split(";");
 
@@ -84,12 +84,7 @@ public class A extends Solution {
                     }
                 }
 
-                m_results[i] = Integer.toString(solution);
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+                finish(i, startTime, Integer.toString(solution));
             }
         }
     }

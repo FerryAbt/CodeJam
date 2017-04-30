@@ -58,12 +58,8 @@ public class C extends Solution {
                 long solution = countSubString(S, 0);
 
                 final String solutionStringRaw = String.format("%04d", solution);
-                m_results[i] = solutionStringRaw.substring(solutionStringRaw.length() - 4);
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+
+                finish(i, startTime, solutionStringRaw.substring(solutionStringRaw.length() - 4));
             }
         }
 

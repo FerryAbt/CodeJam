@@ -150,12 +150,7 @@ public class B extends Solution {
                 solution1 += departuresA.size();
                 solution2 += departuresB.size();
 
-                m_results[i] = solution1 + " " + solution2;
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+                finish(i, startTime, solution1 + " " + solution2);
             }
         }
 

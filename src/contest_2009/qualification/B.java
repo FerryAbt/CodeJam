@@ -170,18 +170,15 @@ public class B extends Solution {
                     }
                 }
 
-                m_results[i] = "";
+                String solutionString = "";
                 for (int j = 0; j < H; j++) {
-                    m_results[i] += "\n" + solution[j][0];
+                    solutionString += "\n" + solution[j][0];
                     for (int k = 1; k < W; k++) {
-                        m_results[i] += " " + solution[j][k];
+                        solutionString += " " + solution[j][k];
                     }
                 }
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+
+                finish(i, startTime, solutionString);
             }
         }
 

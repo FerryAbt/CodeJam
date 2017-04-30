@@ -90,12 +90,7 @@ public class A extends Solution {
                     solution = dictionary.get(S.charAt(0)).matches(S.substring(1));
                 }
 
-                m_results[i] = Integer.toString(solution);
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+                finish(i, startTime, Integer.toString(solution));
             }
         }
     }

@@ -72,6 +72,15 @@ public abstract class Solution {
         }
     }
 
+    protected void finish(int i, long startTime, String solution) {
+        m_results[i] = solution;
+        final long duration = System.currentTimeMillis() - startTime;
+        synchronized (m_lock) {
+            m_done++;
+            System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
+        }
+    }
+
     abstract protected Runnable getNewRunnable(List<Integer> i);
 
 }

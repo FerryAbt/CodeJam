@@ -115,12 +115,7 @@ public class C extends Solution {
                     solution = 1.0 - solution / Math.PI * Math.pow(R, 2);
                 }
 
-                m_results[i] = String.format("%06f", solution);
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+                finish(i, startTime, String.format("%06f", solution));
             }
         }
 

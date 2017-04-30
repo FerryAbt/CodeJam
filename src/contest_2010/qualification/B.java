@@ -83,12 +83,7 @@ public class B extends Solution {
                 }
                 solution = solution.subtract(T);
 
-                m_results[i] = solution.toString();
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+                finish(i, startTime, solution.toString());
             }
         }
     }

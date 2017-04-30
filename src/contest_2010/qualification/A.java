@@ -51,22 +51,20 @@ public class A extends Solution {
 
                 final String result = Integer.toBinaryString(Integer.parseInt(S[1]));
 
+                String solution = "";
                 if (result.length() >= N) {
-                    m_results[i] = "ON";
+                    solution = "ON";
                     for (int j = result.length() - N; j < result.length(); j++) {
                         if (result.charAt(j) == '0') {
-                            m_results[i] = "OFF";
+                            solution = "OFF";
                             break;
                         }
                     }
                 } else {
-                    m_results[i] = "OFF";
+                    solution = "OFF";
                 }
-                final long duration = System.currentTimeMillis() - startTime;
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-                }
+
+                finish(i, startTime, solution);
             }
         }
     }
