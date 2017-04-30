@@ -17,7 +17,7 @@ public class C extends Solution {
 
     private static final String stringPath = "C-test";
     // private static final String stringPath = "C-small-practice";
-    // private static final String stringPath = "C-large-pratice";
+    // private static final String stringPath = "C-large-practice";
 
     private static HashMap<String, Long> known = new HashMap<>();
 

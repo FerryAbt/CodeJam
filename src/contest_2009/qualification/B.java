@@ -20,7 +20,7 @@ public class B extends Solution {
 
     private static final String stringPath = "B-test";
     // private static final String stringPath = "B-small-practice";
-    // private static final String stringPath = "B-large-pratice";
+    // private static final String stringPath = "B-large-practice";
 
     public static void main(String[] args) {
         try {

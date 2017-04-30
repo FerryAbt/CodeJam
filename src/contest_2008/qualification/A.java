@@ -21,7 +21,7 @@ public class A extends Solution {
 
     private static final String stringPath = "A-test";
     // private static final String stringPath = "A-small-practice";
-    // private static final String stringPath = "A-large-pratice";
+    // private static final String stringPath = "A-large-practice";
 
     public static void main(String[] args) {
         try {

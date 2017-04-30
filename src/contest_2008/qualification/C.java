@@ -16,7 +16,7 @@ public class C extends Solution {
 
     private static final String stringPath = "C-test";
     // private static final String stringPath = "C-small-practice";
-    // private static final String stringPath = "C-large-pratice";
+    // private static final String stringPath = "C-large-practice";
 
     public static void main(String[] args) {
         try {

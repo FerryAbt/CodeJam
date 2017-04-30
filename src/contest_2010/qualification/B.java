@@ -17,7 +17,7 @@ public class B extends Solution {
 
     private static final String stringPath = "B-test";
     // private static final String stringPath = "B-small-practice";
-    // private static final String stringPath = "B-large-pratice";
+    // private static final String stringPath = "B-large-practice";
 
     final static BigInteger ZERO = new BigInteger("0");
     final static BigInteger ONE = new BigInteger("1");
