@@ -90,7 +90,7 @@ public class A extends Solution {
                     solution = dictionary.get(S.charAt(0)).matches(S.substring(1));
                 }
 
-                finish(i, startTime, Integer.toString(solution));
+                finish(i, startTime, solution);
             }
         }
     }

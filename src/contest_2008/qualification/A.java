@@ -79,7 +79,7 @@ public class A extends Solution {
                     }
                 }
 
-                finish(i, startTime, Integer.toString(solution));
+                finish(i, startTime, solution);
             }
         }
     }

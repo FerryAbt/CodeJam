@@ -81,6 +81,10 @@ public abstract class Solution {
         }
     }
 
+    protected void finish(int i, long startTime, int solution) {
+        finish(i, startTime, Integer.toString(solution));
+    }
+
     abstract protected Runnable getNewRunnable(List<Integer> i);
 
 }
