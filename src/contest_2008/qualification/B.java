@@ -39,8 +39,7 @@ public class B extends Solution {
 	}
 
 	@Override
-	protected String solveCaseNo(int i) {
-		Case c = m_cases.get(i);
+	protected String solveCase(Case c) {
 		int T = Integer.parseInt(c.lines.get(0));
 
 		int NA = Integer.parseInt(c.lines.get(1));

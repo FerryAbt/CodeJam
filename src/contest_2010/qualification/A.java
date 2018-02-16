@@ -11,8 +11,8 @@ import abtric.utility.Solution;
 public class A extends Solution {
 
 	@Override
-	protected String solveCaseNo(int i) {
-		final String[] S = m_cases.get(i).lines.get(0).split(" ");
+	protected String solveCase(Case c) {
+		final String[] S = c.lines.get(0).split(" ");
 		final int N = Integer.parseInt(S[0]);
 		final String result = Integer.toBinaryString(Integer.parseInt(S[1]));
 		if (result.length() < N) {

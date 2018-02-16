@@ -27,9 +27,9 @@ public class C extends Solution {
 	}
 
 	@Override
-	protected String solveCaseNo(int i) {
-		final String[] RkN = m_cases.get(i).lines.get(0).split(" ");
-		final String[] g_raw = m_cases.get(i).lines.get(1).split(" ");
+	protected String solveCase(Case c) {
+		final String[] RkN = c.lines.get(0).split(" ");
+		final String[] g_raw = c.lines.get(1).split(" ");
 		final int R = Integer.parseInt(RkN[0]);
 		final BigInteger k = new BigInteger(RkN[1]);
 		final int N = Integer.parseInt(RkN[2]);

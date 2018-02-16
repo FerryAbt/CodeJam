@@ -27,7 +27,6 @@ public abstract class Solution {
 	}
 
 	protected int m_numOfProblems;
-	protected List<String> m_inputFile;
 	protected List<Case> m_cases;
 
 	private String[] m_results;
@@ -42,17 +41,16 @@ public abstract class Solution {
 	}
 
 	protected void parseInput(List<String> input) {
-		m_inputFile = input;
-		m_numOfProblems = Integer.parseInt(m_inputFile.get(0));
+		m_numOfProblems = Integer.parseInt(input.get(0));
 		m_cases = new ArrayList<>();
 		for (int i = 0; i < m_numOfProblems; i++) {
 			Case c = new Case(i);
-			c.addLine(m_inputFile.get(i + 1));
+			c.addLine(input.get(i + 1));
 			m_cases.add(c);
 		}
 	}
 
-	protected abstract String solveCaseNo(int i);
+	protected abstract String solveCase(Case c);
 
 	private String getFileName() {
 		String[] packageName = getClass().getName().split("\\.");
@@ -61,9 +59,7 @@ public abstract class Solution {
 	}
 
 	private void solveInternal() {
-		for (int i = 0; i < m_numOfProblems; i++) {
-			m_results[i] = solveCaseNo(i);
-		}
+		m_cases.parallelStream().forEach(c -> m_results[c.index] = solveCase(c));
 	}
 
 	private void write() {

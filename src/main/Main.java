@@ -13,7 +13,7 @@ public class Main {
 	private static HashMap<String, HashMap<String, HashMap<String, Class<? extends Solution>>>> problems = new HashMap<>();
 	private static String year = "2011";
 	private static String round = "qualification";
-	private static String problem = "A";
+	private static String problem = "B";
 	private static InputType inputType = InputType.LARGE_PRACTICE;
 
 	static {
@@ -41,6 +41,7 @@ public class Main {
 		HashMap<String, HashMap<String, Class<? extends Solution>>> year2011 = new HashMap<>();
 		HashMap<String, Class<? extends Solution>> quali2011 = new HashMap<>();
 		quali2011.put("A", contest_2011.qualification.A.class);
+		quali2011.put("B", contest_2011.qualification.B.class);
 		year2011.put("qualification", quali2011);
 		problems.put("2011", year2011);
 	}

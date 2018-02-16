@@ -89,8 +89,8 @@ public class A extends Solution {
 	}
 
 	@Override
-	protected String solveCaseNo(int i) {
-		final String S = m_cases.get(i).lines.get(0);
+	protected String solveCase(Case c) {
+		final String S = c.lines.get(0);
 		char first = S.charAt(0);
 		int solution = 0;
 		if (first == '(') {

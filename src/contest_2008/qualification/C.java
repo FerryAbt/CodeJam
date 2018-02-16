@@ -11,8 +11,8 @@ import abtric.utility.Solution;
 public class C extends Solution {
 
 	@Override
-	protected String solveCaseNo(int i) {
-		String[] input = m_cases.get(i).lines.get(0).split(" ");
+	protected String solveCase(Case c) {
+		String[] input = c.lines.get(0).split(" ");
 		double f = Double.parseDouble(input[0]); // radius of fly
 		double R = Double.parseDouble(input[1]); // outer radius
 		double t = Double.parseDouble(input[2]); // ring thickness

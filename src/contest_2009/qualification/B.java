@@ -48,8 +48,7 @@ public class B extends Solution {
 	}
 
 	@Override
-	protected String solveCaseNo(int i) {
-		Case c = m_cases.get(i);
+	protected String solveCase(Case c) {
 		final int H = Integer.parseInt(c.lines.get(0));
 		final int W = Integer.parseInt(c.lines.get(1));
 		final int[][] field = new int[H][W];

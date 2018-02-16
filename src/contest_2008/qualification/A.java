@@ -41,8 +41,7 @@ public class A extends Solution {
 	}
 
 	@Override
-	protected String solveCaseNo(int i) {
-		Case c = m_cases.get(i);
+	protected String solveCase(Case c) {
 		int S = Integer.parseInt(c.lines.get(0));
 		// Exact search engines are irrelevant
 		/*

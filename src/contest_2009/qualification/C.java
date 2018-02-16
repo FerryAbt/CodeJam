@@ -36,8 +36,8 @@ public class C extends Solution {
 	}
 
 	@Override
-	protected String solveCaseNo(int i) {
-		final String S = m_cases.get(i).lines.get(0);
+	protected String solveCase(Case c) {
+		final String S = c.lines.get(0);
 		long solution = countSubString(S, 0);
 		final String solutionStringRaw = String.format("%04d", solution);
 		return solutionStringRaw.substring(solutionStringRaw.length() - 4);
