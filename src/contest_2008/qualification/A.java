@@ -66,6 +66,5 @@ public class A extends Solution {
 			}
 		}
 		return Integer.toString(solution);
-
 	}
 }

@@ -11,10 +11,10 @@ import abtric.utility.Solution.InputType;
 public class Main {
 
 	private static HashMap<String, HashMap<String, HashMap<String, Class<? extends Solution>>>> problems = new HashMap<>();
-	private static String year = "2008";
+	private static String year = "2011";
 	private static String round = "qualification";
 	private static String problem = "A";
-	private static InputType inputType = InputType.TEST;
+	private static InputType inputType = InputType.LARGE_PRACTICE;
 
 	static {
 		HashMap<String, HashMap<String, Class<? extends Solution>>> year2008 = new HashMap<>();

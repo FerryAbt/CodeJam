@@ -30,36 +30,36 @@ public class B extends Solution {
 
 	@Override
 	protected void parseInput(List<String> rawInputFile) {
-		m_inputFile = new ArrayList<>();
+		m_cases = new ArrayList<>();
 		m_numOfProblems = Integer.parseInt(rawInputFile.remove(0));
-		m_inputFile.add(Integer.toString(m_numOfProblems));
 		for (int i = 0; i < m_numOfProblems; i++) {
+			Case c = new Case(i);
 			final String[] HW = rawInputFile.remove(0).split(" ");
 			final int H = Integer.parseInt(HW[0]);
 			String field = rawInputFile.remove(0);
 			for (int j = 1; j < H; j++) {
 				field += " " + rawInputFile.remove(0);
 			}
-			m_inputFile.add(HW[0]);
-			m_inputFile.add(HW[1]);
-			m_inputFile.add(field);
+			c.addLine(HW[0]);
+			c.addLine(HW[1]);
+			c.addLine(field);
+			m_cases.add(c);
 		}
 	}
 
 	@Override
 	protected String solveCaseNo(int i) {
-		final int H = Integer.parseInt(m_inputFile.get(1 + i * 3));
-		final int W = Integer.parseInt(m_inputFile.get(2 + i * 3));
+		Case c = m_cases.get(i);
+		final int H = Integer.parseInt(c.lines.get(0));
+		final int W = Integer.parseInt(c.lines.get(1));
 		final int[][] field = new int[H][W];
-		final String[] inputField = m_inputFile.get(3 + i * 3).split(" ");
+		final String[] inputField = c.lines.get(2).split(" ");
 		for (int j = 0; j < H; j++) {
 			for (int k = 0; k < W; k++) {
 				field[j][k] = Integer.parseInt(inputField[j * W + k]);
 			}
 		}
-
 		Label[][] solution = new Label[H][W];
-
 		int basins = 0;
 		for (int j = 0; j < H; j++) {
 			for (int k = 0; k < W; k++) {
@@ -95,7 +95,6 @@ public class B extends Solution {
 						lowestNeighbor = field[x + 1][y];
 						dir = 4;
 					}
-
 					switch (dir) {
 					case 1:
 						if (solution[x - 1][y] != null) {
@@ -125,7 +124,6 @@ public class B extends Solution {
 						}
 						x++;
 						break;
-
 					default:
 						sink = true;
 						break;
@@ -133,24 +131,22 @@ public class B extends Solution {
 				}
 			}
 		}
-
 		HashMap<Integer, Character> mapping = new HashMap<>();
-		int count = 97;
+		char count = 'a';
 		for (int j = 0; j < H; j++) {
 			for (int k = 0; k < W; k++) {
 				if (solution[j][k].actual > 0) {
 					continue;
 				}
 				if (!mapping.containsKey(solution[j][k].label)) {
-					mapping.put(solution[j][k].label, (char) count);
-					solution[j][k].actual = (char) count;
+					mapping.put(solution[j][k].label, count);
+					solution[j][k].actual = count;
 					count++;
 				} else {
 					solution[j][k].actual = mapping.get(solution[j][k].label);
 				}
 			}
 		}
-
 		String solutionString = "";
 		for (int j = 0; j < H; j++) {
 			solutionString += "\n" + solution[j][0];

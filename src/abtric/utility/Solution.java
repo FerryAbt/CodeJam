@@ -41,7 +41,16 @@ public abstract class Solution {
 		write();
 	}
 
-	protected abstract void parseInput(List<String> input);
+	protected void parseInput(List<String> input) {
+		m_inputFile = input;
+		m_numOfProblems = Integer.parseInt(m_inputFile.get(0));
+		m_cases = new ArrayList<>();
+		for (int i = 0; i < m_numOfProblems; i++) {
+			Case c = new Case(i);
+			c.addLine(m_inputFile.get(i + 1));
+			m_cases.add(c);
+		}
+	}
 
 	protected abstract String solveCaseNo(int i);
 
@@ -80,11 +89,6 @@ public abstract class Solution {
 			System.exit(0);
 		}
 		return rawInput;
-	}
-
-	protected void defaultInput(List<String> input) {
-		m_inputFile = input;
-		m_numOfProblems = Integer.parseInt(m_inputFile.get(0));
 	}
 
 	public enum InputType {

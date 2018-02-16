@@ -1,7 +1,6 @@
 package contest_2010.qualification;
 
 import java.math.BigInteger;
-import java.util.List;
 
 import abtric.utility.Solution;
 
@@ -13,24 +12,16 @@ import abtric.utility.Solution;
  */
 public class B extends Solution {
 
-	final static BigInteger ZERO = new BigInteger("0");
-	final static BigInteger ONE = new BigInteger("1");
-
-	@Override
-	protected void parseInput(List<String> input) {
-		defaultInput(input);
-	}
-
 	@Override
 	protected String solveCaseNo(int i) {
-		final String[] S = m_inputFile.get(1 + i).split(" ");
+		final String[] S = m_cases.get(i).lines.get(0).split(" ");
 		final int N = Integer.parseInt(S[0]);
 		BigInteger[] t = new BigInteger[N];
 		for (int j = 0; j < N; j++) {
 			t[j] = new BigInteger(S[1 + j]);
 		}
 
-		BigInteger solution = ZERO;
+		BigInteger solution = BigInteger.ZERO;
 		BigInteger T = t[0].subtract(t[1]);
 		for (int j = 0; j < N - 1; j++) {
 			for (int k = 1; k < N; k++) {
@@ -39,15 +30,15 @@ public class B extends Solution {
 		}
 
 		if (t[0].divide(T).multiply(T).compareTo(t[0]) == 0) {
-			solution = ZERO;
+			solution = BigInteger.ZERO;
 		} else {
-			solution = t[0].divide(T).add(ONE).multiply(T).subtract(t[0]);
+			solution = t[0].divide(T).add(BigInteger.ONE).multiply(T).subtract(t[0]);
 		}
 		boolean done = false;
 		while (!done) {
 			done = true;
 			for (int k = 0; k < N; k++) {
-				if (t[k].add(solution).mod(T).compareTo(ZERO) != 0) {
+				if (t[k].add(solution).mod(T).compareTo(BigInteger.ZERO) != 0) {
 					done = false;
 					break;
 				}

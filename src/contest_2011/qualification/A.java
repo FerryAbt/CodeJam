@@ -1,7 +1,5 @@
 package contest_2011.qualification;
 
-import java.util.List;
-
 import abtric.utility.Solution;
 
 /**
@@ -13,13 +11,8 @@ import abtric.utility.Solution;
 public class A extends Solution {
 
 	@Override
-	protected void parseInput(List<String> input) {
-		defaultInput(input);
-	}
-
-	@Override
 	protected String solveCaseNo(int i) {
-		final String[] S = m_inputFile.get(1 + i).split(" ");
+		final String[] S = m_cases.get(i).lines.get(0).split(" ");
 		final int N = Integer.parseInt(S[0]);
 		boolean[] orderForBlue = new boolean[N];
 		int[] buttonSequence = new int[N];
@@ -27,9 +20,7 @@ public class A extends Solution {
 			orderForBlue[j] = S[j * 2 + 1].equals("B");
 			buttonSequence[j] = Integer.parseInt(S[j * 2 + 2]);
 		}
-
 		int solution = 0;
-
 		int currentInstruction = 0;
 		int orangeLocation = 1;
 		int blueLocation = 1;
@@ -71,7 +62,6 @@ public class A extends Solution {
 					orangeLocation++;
 				}
 			}
-
 			if (orderForBlue[currentInstruction]) {
 				if (buttonSequence[currentInstruction] == blueLocation) {
 					pressedButton = true;
@@ -101,5 +91,4 @@ public class A extends Solution {
 		}
 		return Integer.toString(solution);
 	}
-
 }

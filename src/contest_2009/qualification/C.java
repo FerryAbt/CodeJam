@@ -1,7 +1,6 @@
 package contest_2009.qualification;
 
 import java.util.HashMap;
-import java.util.List;
 
 import abtric.utility.Solution;
 
@@ -13,10 +12,9 @@ import abtric.utility.Solution;
  */
 public class C extends Solution {
 
-	private static HashMap<String, Long> known = new HashMap<>();
+	private static final HashMap<String, Long> known = new HashMap<>();
 
-	private final static char[] TEXT = new char[] { 'w', 'e', 'l', 'c', 'o', 'm', 'e', ' ', 't', 'o', ' ', 'c', 'o',
-			'd', 'e', ' ', 'j', 'a', 'm' };
+	private static final char[] TEXT = "welcome to code jam".toCharArray();
 
 	private long countSubString(final String S, final int i) {
 		if (known.containsKey(i + S)) {
@@ -38,18 +36,10 @@ public class C extends Solution {
 	}
 
 	@Override
-	protected void parseInput(List<String> input) {
-		defaultInput(input);
-	}
-
-	@Override
 	protected String solveCaseNo(int i) {
-		final String S = m_inputFile.get(1 + i);
-
+		final String S = m_cases.get(i).lines.get(0);
 		long solution = countSubString(S, 0);
-
 		final String solutionStringRaw = String.format("%04d", solution);
-
 		return solutionStringRaw.substring(solutionStringRaw.length() - 4);
 	}
 }

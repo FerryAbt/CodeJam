@@ -66,11 +66,10 @@ public class A extends Solution {
 
 	@Override
 	protected void parseInput(List<String> rawInputFile) {
-		m_inputFile = new ArrayList<>();
 		final String[] LDN = rawInputFile.remove(0).split(" ");
-		final int D = Integer.parseInt(LDN[1]);
 		m_numOfProblems = Integer.parseInt(LDN[2]);
-		m_inputFile.add(Integer.toString(m_numOfProblems));
+		m_cases = new ArrayList<>();
+		final int D = Integer.parseInt(LDN[1]);
 		String S = rawInputFile.remove(0);
 		dictionary = new HashMap<>();
 		dictionary.put(S.charAt(0), new Node(S.substring(1)));
@@ -82,12 +81,16 @@ public class A extends Solution {
 				dictionary.put(S.charAt(0), new Node(S.substring(1)));
 			}
 		}
-		m_inputFile.addAll(rawInputFile);
+		for (int i = 0; i < m_numOfProblems; i++) {
+			Case c = new Case(i);
+			c.addLine(rawInputFile.remove(0));
+			m_cases.add(c);
+		}
 	}
 
 	@Override
 	protected String solveCaseNo(int i) {
-		final String S = m_inputFile.get(1 + i);
+		final String S = m_cases.get(i).lines.get(0);
 		char first = S.charAt(0);
 		int solution = 0;
 		if (first == '(') {
