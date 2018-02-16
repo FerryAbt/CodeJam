@@ -1,9 +1,5 @@
 package contest_2008.qualification;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,68 +15,57 @@ import abtric.utility.Solution;
  */
 public class A extends Solution {
 
-    private static final String stringPath = "A-test";
-    // private static final String stringPath = "A-small-practice";
-    // private static final String stringPath = "A-large-practice";
+	@Override
+	protected void parseInput(List<String> rawInputFile) {
+		m_numOfProblems = Integer.parseInt(rawInputFile.remove(0)); // N
+		m_cases = new ArrayList<>();
+		for (int i = 0; i < m_numOfProblems; i++) {
+			Case c = new Case(i);
+			String S_String = rawInputFile.remove(0);
+			int S = Integer.parseInt(S_String);
+			c.addLine(S_String);
+			// with this solution the exact search engines are irrelevant. Drop them instead
+			// of adding them to the case.
+			rawInputFile.subList(0, S).clear();
+			/*
+			 * for (int j = 0; j < S; j++) { c.addLine(rawInputFile.remove(0)); }
+			 */
+			String Q_String = rawInputFile.remove(0);
+			int Q = Integer.parseInt(Q_String);
+			c.addLine(Q_String);
+			for (int j = 0; j < Q; j++) {
+				c.addLine(rawInputFile.remove(0));
+			}
+			m_cases.add(c);
+		}
+	}
 
-    public static void main(String[] args) {
-        try {
-            // preprocessing to get constant number of lines per problem
-            List<String> rawInputFile = Files.readAllLines(FileSystems.getDefault().getPath("in", stringPath + ".in"));
-            List<String> inputFile = new ArrayList<>();
-            final int T = Integer.parseInt(rawInputFile.get(0));
-            inputFile.add(rawInputFile.remove(0));
-            for (int i = 0; i < T; i++) {
-                inputFile.add(rawInputFile.remove(0));
-                final int Q = Integer.parseInt(rawInputFile.remove(0));
-                String searches = Q > 0 ? rawInputFile.remove(0) : "";
-                for (int j = 1; j < Q; j++) {
-                    searches += ";" + rawInputFile.remove(0);
-                }
-                inputFile.add(searches);
-            }
-            String[] result = new A(inputFile).solve();
-            write("out" + File.separatorChar + stringPath + ".out", result);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	protected String solveCaseNo(int i) {
+		Case c = m_cases.get(i);
+		int S = Integer.parseInt(c.lines.get(0));
+		// Exact search engines are irrelevant
+		/*
+		 * String[] searchEngines = new String[S]; for (int j = 0; j < S; j++) {
+		 * searchEngines[j] = c.lines.get(j + 1); }
+		 */
+		final int Q = Integer.parseInt(c.lines.get(S + 1));
+		final String[] queries = new String[Q];
+		for (int j = 0; j < Q; j++) {
+			queries[j] = c.lines.get(S + j + 2);
+		}
 
-    private A(List<String> inputFile) throws IOException {
-        super(inputFile);
-    }
+		//
+		int solution = 0;
+		Set<String> searchedMachines = new HashSet<>();
+		for (int j = 0; j < Q; j++) {
+			if (searchedMachines.add(queries[j]) && searchedMachines.size() == S) {
+				searchedMachines.clear();
+				searchedMachines.add(queries[j]);
+				solution++;
+			}
+		}
+		return Integer.toString(solution);
 
-    protected Runnable getNewRunnable(final List<Integer> i) {
-        return new SolveRunnable(i);
-    }
-
-    private class SolveRunnable implements Runnable {
-        private final List<Integer> I;
-
-        private SolveRunnable(final List<Integer> i) {
-            I = i;
-        }
-
-        public void run() {
-            for (Integer i : I) {
-                final long startTime = System.currentTimeMillis();
-
-                final int S = Integer.parseInt(m_inputFile.get(i * 2 + 1));
-                final String[] Q = m_inputFile.get(i * 2 + 2).split(";");
-
-                int solution = 0;
-                Set<String> searchedMachines = new HashSet<>();
-                for (int j = 0; j < Q.length; j++) {
-                    searchedMachines.add(Q[j]);
-                    if (searchedMachines.size() == S) {
-                        searchedMachines.clear();
-                        searchedMachines.add(Q[j]);
-                        solution++;
-                    }
-                }
-
-                finish(i, startTime, solution);
-            }
-        }
-    }
+	}
 }

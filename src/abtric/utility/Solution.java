@@ -1,90 +1,100 @@
 package abtric.utility;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Solution {
 
-    protected final int m_numOfProblems;
-    protected final List<String> m_inputFile;
-    protected int m_done = 0;
-    protected String[] m_results;
-    protected final Object m_lock = new Object();
+	protected class Case {
+		public ArrayList<String> lines;
+		protected int index;
 
-    protected Solution(String stringPath) throws IOException {
-        m_inputFile = Files.readAllLines(FileSystems.getDefault().getPath("in", stringPath + ".in"));
-        m_numOfProblems = Integer.parseInt(m_inputFile.get(0));
-        m_results = new String[m_numOfProblems];
-    }
+		public Case(int index) {
+			this.index = index;
+			lines = new ArrayList<>();
+		}
 
-    protected Solution(final List<String> inputFile) throws IOException {
-        m_inputFile = inputFile;
-        m_numOfProblems = Integer.parseInt(m_inputFile.get(0));
-        m_results = new String[m_numOfProblems];
-    }
+		public void addLine(String line) {
+			lines.add(line);
+		}
 
-    protected String[] solve() {
-        long start = System.currentTimeMillis();
-        final int CORES = 8;
-        for (int i = 0; i < CORES; i++) {
-            List<Integer> tasks = new ArrayList<>();
-            int j = i;
-            while (j < m_numOfProblems) {
-                tasks.add(j);
-                j += CORES;
-            }
-            Thread worker = new Thread(getNewRunnable(tasks));
-            try {
-                worker.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-                synchronized (m_lock) {
-                    m_done++;
-                    System.out.println(m_done + "/" + m_numOfProblems);
-                }
-            }
-        }
-        while (m_done < m_numOfProblems) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(System.currentTimeMillis() - start + "ms");
-        return m_results;
-    }
+	}
 
-    protected static void write(String file, String[] content) {
-        try {
-            System.out.println("writing to " + FileSystems.getDefault().getPath(file));
-            FileWriter writer = new FileWriter(file);
-            for (int i = 0; i < content.length; i++) {
-                writer.write("Case #" + (i + 1) + ": " + content[i] + "\n");
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	protected int m_numOfProblems;
+	protected List<String> m_inputFile;
+	protected List<Case> m_cases;
 
-    protected void finish(int i, long startTime, String solution) {
-        m_results[i] = solution;
-        final long duration = System.currentTimeMillis() - startTime;
-        synchronized (m_lock) {
-            m_done++;
-            System.out.println(String.format("%03d/%03d (%dms)", m_done, m_numOfProblems, duration));
-        }
-    }
+	private String[] m_results;
+	private InputType inputType;
 
-    protected void finish(int i, long startTime, int solution) {
-        finish(i, startTime, Integer.toString(solution));
-    }
+	public void solve(InputType inputType) {
+		this.inputType = inputType;
+		parseInput(read());
+		m_results = new String[m_numOfProblems];
+		solveInternal();
+		write();
+	}
 
-    abstract protected Runnable getNewRunnable(List<Integer> i);
+	protected abstract void parseInput(List<String> input);
+
+	protected abstract String solveCaseNo(int i);
+
+	private String getFileName() {
+		String[] packageName = getClass().getName().split("\\.");
+		return packageName[0].replaceFirst("contest_", "") + File.separatorChar + packageName[1] + File.separatorChar
+				+ packageName[2] + "-" + inputType.fileName;
+	}
+
+	private void solveInternal() {
+		for (int i = 0; i < m_numOfProblems; i++) {
+			m_results[i] = solveCaseNo(i);
+		}
+	}
+
+	private void write() {
+		try {
+			Path path = FileSystems.getDefault().getPath("out", getFileName() + ".out");
+			System.out.println("writing to " + path);
+			FileWriter writer = new FileWriter(path.toString());
+			for (int i = 0; i < m_results.length; i++) {
+				writer.write("Case #" + (i + 1) + ": " + m_results[i] + "\n");
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private List<String> read() {
+		List<String> rawInput = null;
+		try {
+			rawInput = Files.readAllLines(FileSystems.getDefault().getPath("in", getFileName() + ".in"));
+		} catch (IOException e) {
+			System.err.println("Error reading input file \"" + getFileName() + "\": " + e.getMessage());
+			System.exit(0);
+		}
+		return rawInput;
+	}
+
+	protected void defaultInput(List<String> input) {
+		m_inputFile = input;
+		m_numOfProblems = Integer.parseInt(m_inputFile.get(0));
+	}
+
+	public enum InputType {
+		TEST("test"), SMALL_PRACTICE("small-practice"), LARGE_PRACTICE("large-practice");
+
+		String fileName;
+
+		InputType(String fileName) {
+			this.fileName = fileName;
+		}
+	}
 
 }
