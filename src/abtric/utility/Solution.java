@@ -13,7 +13,7 @@ public abstract class Solution {
 
 	protected class Case {
 		public ArrayList<String> lines;
-		protected int index;
+		public int index;
 
 		public Case(int index) {
 			this.index = index;
@@ -60,6 +60,7 @@ public abstract class Solution {
 
 	private void solveInternal() {
 		m_cases.parallelStream().forEach(c -> m_results[c.index] = solveCase(c));
+//		m_cases.stream().forEach(c -> m_results[c.index] = solveCase(c));
 	}
 
 	private void write() {

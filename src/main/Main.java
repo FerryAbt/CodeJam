@@ -11,9 +11,12 @@ import abtric.utility.Solution.InputType;
 public class Main {
 
 	private static HashMap<String, HashMap<String, HashMap<String, Class<? extends Solution>>>> problems = new HashMap<>();
+
+	// *IMPORTANT* Replace these with empty Strings if you want to get a menu.
+	// Otherwise this directly starts the specified problem-solver
 	private static String year = "2011";
 	private static String round = "qualification";
-	private static String problem = "B";
+	private static String problem = "C";
 	private static InputType inputType = InputType.LARGE_PRACTICE;
 
 	static {
@@ -42,6 +45,7 @@ public class Main {
 		HashMap<String, Class<? extends Solution>> quali2011 = new HashMap<>();
 		quali2011.put("A", contest_2011.qualification.A.class);
 		quali2011.put("B", contest_2011.qualification.B.class);
+		quali2011.put("C", contest_2011.qualification.C.class);
 		year2011.put("qualification", quali2011);
 		problems.put("2011", year2011);
 	}
@@ -54,28 +58,29 @@ public class Main {
 						+ problems.keySet().stream().sorted().collect(Collectors.joining(", ")) + "): ");
 				year = scanner.nextLine();
 			}
-			if (problems.get(year).size() == 1) {
-				round = problems.get(year).keySet().iterator().next();
-				System.out.println("Round: " + round);
-			} else {
-				while (!problems.get(year).containsKey(round)
-						&& !("q".equals(round) && problems.get(year).containsKey("qualification"))) {
-					System.out.println("Choose a round ("
-							+ problems.get(year).keySet().stream().sorted().collect(Collectors.joining(", ")) + "):");
-					round = scanner.nextLine();
+			System.out.println("Year: " + year);
+			while (!problems.get(year).containsKey(round)
+					&& !("q".equals(round) && problems.get(year).containsKey("qualification"))) {
+				if (problems.get(year).size() == 1) {
+					round = problems.get(year).keySet().iterator().next();
+					break;
 				}
+				System.out.println("Choose a round ("
+						+ problems.get(year).keySet().stream().sorted().collect(Collectors.joining(", ")) + "):");
+				round = scanner.nextLine();
 			}
-			if (problems.get(year).get(round).size() == 1) {
-				problem = problems.get(year).get(round).keySet().iterator().next();
-				System.out.println("Problem: " + problem);
-			} else {
-				while (!problems.get(year).get(round).containsKey(problem)) {
-					System.out.println("Choose a problem ("
-							+ problems.get(year).get(round).keySet().stream().sorted().collect(Collectors.joining(", "))
-							+ "):");
-					problem = scanner.nextLine();
+			System.out.println("Round: " + round);
+			while (!problems.get(year).get(round).containsKey(problem)) {
+				if (problems.get(year).get(round).size() == 1) {
+					problem = problems.get(year).get(round).keySet().iterator().next();
+					break;
 				}
+				System.out.println("Choose a problem ("
+						+ problems.get(year).get(round).keySet().stream().sorted().collect(Collectors.joining(", "))
+						+ "):");
+				problem = scanner.nextLine();
 			}
+			System.out.println("Problem: " + problem);
 			Class<? extends Solution> solverToRun = problems.get(year).get(round).get(problem);
 			try {
 				solverToRun.getMethod("solve", InputType.class).invoke(solverToRun.getConstructor().newInstance(),
